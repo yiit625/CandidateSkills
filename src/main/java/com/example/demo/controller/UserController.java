@@ -23,6 +23,7 @@ public class UserController {
 
     private final UserService userService;
     @PostMapping("/upload-csv-file")
+    @ResponseStatus(HttpStatus.OK)
     public List<UserModel> uploadCSVFile(@RequestParam("file") MultipartFile file) {
         List<UserModel> users = new ArrayList<>();
         // validate file

@@ -1,9 +1,12 @@
 package com.example.demo.dto;
 
 import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 
 @AllArgsConstructor
@@ -17,5 +20,6 @@ public class UserModel {
     @CsvBindByName(column = "DESCRIPTION")
     private String description;
     @CsvBindByName(column = "UPDATED_TIMESTAMP")
-    private String date;
+    @CsvDate("yyyy-MM-dd'T'HH:mm:ss'Z'")
+    private LocalDateTime dateTime;
 }

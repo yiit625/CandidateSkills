@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper {
     public User mapUserModelDataToEntity(UserModel newUser) {
-        return new User(newUser.getId(), newUser.getName(), newUser.getDescription(), newUser.getDate());
+        return new User(newUser.getId(), newUser.getName(), newUser.getDescription(), newUser.getDateTime());
     }
 }

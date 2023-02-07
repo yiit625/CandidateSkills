@@ -30,6 +30,6 @@ public class User implements Serializable {
     private String description;
 
     @Column(name = "created_datetime")
-    // @CreatedDate
-    private String createdDateTime;
+    @CreatedDate
+    private LocalDateTime createdDateTime;
 }
