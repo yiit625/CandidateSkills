@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.domain.User;
 import com.example.demo.dto.UserModel;
+import com.example.demo.service.UserService;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.RequiredArgsConstructor;
@@ -11,17 +13,18 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.List;
-
 @RestController
 @RequestMapping("user-service")
 @RequiredArgsConstructor
 @CrossOrigin
 public class UserController {
 
+    private final UserService userService;
     @PostMapping("/upload-csv-file")
-    public String uploadCSVFile(@RequestParam("file") MultipartFile file) {
-
+    public List<UserModel> uploadCSVFile(@RequestParam("file") MultipartFile file) {
+        List<UserModel> users = new ArrayList<>();
         // validate file
         if (file.isEmpty()) {
             System.out.println("Paste error here!!");
@@ -34,32 +37,26 @@ public class UserController {
                         .withIgnoreLeadingWhiteSpace(true)
                         .build();
 
-                List<UserModel> users = csvToBean.parse();
-
-                System.out.println(users.get(0).getId());
-                System.out.println(users.get(0).getName());
-                System.out.println(users.get(0).getDescription());
-                System.out.println(users.get(0).getDate());
-
+                users = csvToBean.parse();
+                userService.createUsers(users);
 
             } catch (Exception ex) {
                 System.out.println("Error is --> " + ex);
             }
         }
 
-        return "Successful message";
+        return users;
     }
 
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable String userId) {
-        System.out.println(userId);
+        userService.deleteUser(userId);
     }
 
     @GetMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserModel getUserById(@PathVariable String userId) {
-        System.out.println(userId);
-        return new UserModel();
+    public User getUserById(@PathVariable String userId) {
+        return userService.getUserById(userId);
     }
 }
