@@ -24,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final UserValidationFacade userValidationFacade;
     @Override
     public List<User> createUsers(List<UserModel> newUsers) {
+        userValidationFacade.validateUsersCreateAction(newUsers);
         List<User> userEntityList = new ArrayList<>();
         newUsers.forEach(newUser -> {
             userEntityList.add(userMapper.mapUserModelDataToEntity(newUser));

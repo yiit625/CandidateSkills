@@ -1,6 +1,7 @@
 package com.example.demo.validation;
 
 import com.example.demo.domain.User;
+import com.example.demo.dto.UserModel;
 import com.example.demo.dto.UserValidationDto;
 import com.example.demo.exception.UsersValidationException;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Component
@@ -50,5 +50,29 @@ public class UserValidationFacade {
                 .validatedId(userId)
                 .exceptionMessages(performedValidation.stream().toList())
                 .build();
+    }
+
+    public void validateUsersCreateAction(List<UserModel> usersFromRequest) {
+        List<ValidationStatus<String, UserValidationDto>> validationStatuses =
+                UserValidationDto.fromUserCommandDataList(usersFromRequest)
+                .stream()
+                .map(this::performUserValidation)
+                .filter(validationUtil::checkIfExceptionMessagesExist)
+                .toList();
+
+        verifyValidationStatuses(validationStatuses);
+    }
+
+    private ValidationStatus<String, UserValidationDto> performUserValidation(UserValidationDto userToValidate) {
+        List<Optional<String>> performedValidations = List.of(
+                userRepositoryValidator.checkIfUserExistsInRepository(userToValidate),
+                userRepositoryValidator.checkUserId(userToValidate)
+        );
+
+        return new ValidationStatus.ValidationStatusBuilder<String, UserValidationDto>()
+                .validatedObject(userToValidate)
+                .exceptionMessages(validationUtil.unwrapValidationMessages(performedValidations))
+                .build();
+
     }
 }

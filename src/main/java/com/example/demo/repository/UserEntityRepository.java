@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserEntityRepository extends JpaRepository<User, String>, JpaSpecificationExecutor<User> {
+    boolean existsById(String id);
+
 }
