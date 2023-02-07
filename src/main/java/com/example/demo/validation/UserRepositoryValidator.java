@@ -14,7 +14,7 @@ public class UserRepositoryValidator {
 
     private static final String USER_EXISTS_IN_REPOSITORY_EXCEPTION_MESSAGE = "Following user already exists in the database";
 
-    private static final String USER_ID_NOT_FOUND_EXCEPTION_MESSAGE = "User is not found in the document";
+    private static final String USER_ID_NOT_FOUND_EXCEPTION_MESSAGE = "User id is not found in the document. Please check the document";
 
     private final UserEntityRepository userEntityRepository;
 
