@@ -4,6 +4,7 @@ import com.example.demo.dto.UserModel;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,5 +48,18 @@ public class UserController {
         }
 
         return "Successful message";
+    }
+
+    @DeleteMapping("/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable String userId) {
+        System.out.println(userId);
+    }
+
+    @GetMapping("/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserModel getUserById(@PathVariable String userId) {
+        System.out.println(userId);
+        return new UserModel();
     }
 }
